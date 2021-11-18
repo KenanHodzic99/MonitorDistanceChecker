@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .indikatori{
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+      }
+      .dugme{
+        width: 10%;
+        height: 10%;
+        padding: 5px;
+        margin: 5px;
+      }
+      .container{
+        margin: auto;
+        text-align: center;
+      }
+      #udaljenost{
+        font-size: 50px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+    </style>
+</head>
+<body>
+
+    
+      <div class="container">
+    <h3 style="margin-top: 20%;" id="udaljenost"></h3>
+    <label style="margin-top: 5%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" >Velicina ekrana: </label>
+    <input style="margin-top: 5%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" type="text" id="velicinaMonitora"/> 
+  </div>
+  </div>
+    </br>
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+        apiKey: "AIzaSyCg1CCCuCnnS7ptuEvt5FOwdw8oOwxCtp8",
+        authDomain: "monitordistancechecker.firebaseapp.com",
+        databaseURL: "https://monitordistancechecker-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "monitordistancechecker",
+        storageBucket: "monitordistancechecker.appspot.com",
+        messagingSenderId: "631651945484",
+        appId: "1:631651945484:web:8791c51cb710066595b229",
+        measurementId: "G-8RH09BSFR4"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  
+    var mjestoZaPodatak = document.getElementById('udaljenost');
+    var dbRef = firebase.database().ref().child('SensorData');
+    var input = document.getElementById('velicinaMonitora')
+
+    dbRef.on('value', (podatak) => {
+        mjestoZaPodatak.innerHTML = podatak.val() + "cm";
+        var preporucenaDaljina
+
+        if (input >= 24) {
+            preporucenaDaljina = 90 + input.value - 24;
+        }
+        else
+        {
+            preporucenaDaljina = 90 - input.value - 24
+        }
+
+        if (podatak.val() < preporucenaDaljina)
+        {
+          document.body.style.backgroundColor="red";
+        }
+        else
+        {
+          document.body.style.backgroundColor="green";
+        }
+    });
+  
+</script>
+  </body>
+</html>
