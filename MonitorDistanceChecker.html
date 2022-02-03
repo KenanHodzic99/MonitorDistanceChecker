@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-      .indikatori{
+      .indicators{
         display: inline-block;
         width: 100%;
         height: 100%;
       }
-      .dugme{
+      .button{
         width: 10%;
         height: 10%;
         padding: 5px;
@@ -21,7 +21,7 @@
         margin: auto;
         text-align: center;
       }
-      #udaljenost{
+      #distance{
         font-size: 50px;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       }
@@ -31,9 +31,9 @@
 
     
       <div class="container">
-    <h3 style="margin-top: 20%;" id="udaljenost"></h3>
-    <label style="margin-top: 5%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" >Velicina ekrana: </label>
-    <input style="margin-top: 5%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" type="text" id="velicinaMonitora"/> 
+    <h3 style="margin-top: 20%;" id="distance"></h3>
+    <label style="margin-top: 5%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" >Screen size: </label>
+    <input style="margin-top: 5%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" type="text" id="screenSize"/> 
   </div>
   </div>
     </br>
@@ -63,23 +63,23 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
   
-    var mjestoZaPodatak = document.getElementById('udaljenost');
+    var data = document.getElementById('distance');
     var dbRef = firebase.database().ref().child('SensorData');
-    var input = document.getElementById('velicinaMonitora')
+    var input = document.getElementById('screenSize')
 
-    dbRef.on('value', (podatak) => {
-        mjestoZaPodatak.innerHTML = podatak.val() + "cm";
-        var preporucenaDaljina
+    dbRef.on('value', (dataValue) => {
+        data.innerHTML = dataValue.val() + "cm";
+        var recommendedDistance
 
         if (input >= 24) {
-            preporucenaDaljina = 90 + input.value - 24;
+          recommendedDistance = 90 + input.value - 24;
         }
         else
         {
-            preporucenaDaljina = 90 - input.value - 24
+          recommendedDistance = 90 - input.value - 24
         }
 
-        if (podatak.val() < preporucenaDaljina)
+        if (dataValue.val() < recommendedDistance)
         {
           document.body.style.backgroundColor="red";
         }
